@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace WebSalesProject.Models
@@ -16,6 +17,9 @@ namespace WebSalesProject.Models
         public int? VendorId { get; set; }
 
         public virtual Vendor Vendor { get; set; }
+
+        [JsonIgnore]
+        public virtual IEnumerable<RequestLine> RequestLines { get; set; }
 
         public Product() { }
         }

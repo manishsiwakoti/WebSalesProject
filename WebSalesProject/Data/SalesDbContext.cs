@@ -13,6 +13,7 @@ namespace WebSalesProject.Data
         public DbSet<Vendor> vendors { get; set; }
         public DbSet<Product> products { get; set; }
         public DbSet<Request> requests { get; set; }
+        public DbSet<RequestLine> RequestLines { get; set; }
         public SalesDbContext(DbContextOptions<SalesDbContext> options) : base(options) { }
         protected override void OnConfiguring(DbContextOptionsBuilder builder)
             {
@@ -58,10 +59,24 @@ namespace WebSalesProject.Data
                 e.Property(x => x.Photopath).HasMaxLength(255);
                 e.Property(x => x.VendorId);
             });
-            model.Entity<Request>(e => { 
+            model.Entity<Request>(e => {
+                e.HasKey(x => x.Id);
+                e.Property(x => x.Description).HasMaxLength(50).IsRequired();
+                e.Property(x => x.Justification).HasMaxLength(50).IsRequired();
+                e.Property(x => x.RejectionReason).HasMaxLength(50);
+                e.Property(x => x.Total).HasColumnType("decimal(11,2)");
+            });
+
+            model.Entity<RequestLine>(e =>
+            {
+                e.HasKey(x => x.Id);
+                e.Property(x => x.RequestId);
+                e.Property(x => x.ProductId);
+
 
             });
             }
+        public DbSet<WebSalesProject.Models.RequestLine> RequestLine { get; set; }
              
             }
 

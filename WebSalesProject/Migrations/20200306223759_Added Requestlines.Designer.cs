@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebSalesProject.Data;
 
 namespace WebSalesProject.Migrations
 {
     [DbContext(typeof(SalesDbContext))]
-    partial class SalesDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200306223759_Added Requestlines")]
+    partial class AddedRequestlines
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -98,7 +100,8 @@ namespace WebSalesProject.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserId")
+                        .IsUnique();
 
                     b.ToTable("requests");
                 });
@@ -242,8 +245,8 @@ namespace WebSalesProject.Migrations
             modelBuilder.Entity("WebSalesProject.Models.Request", b =>
                 {
                     b.HasOne("WebSalesProject.Models.User", "User")
-                        .WithMany("Requests")
-                        .HasForeignKey("UserId")
+                        .WithOne("Request")
+                        .HasForeignKey("WebSalesProject.Models.Request", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace WebSalesProject.Models
@@ -28,6 +29,8 @@ namespace WebSalesProject.Models
         public int UserId { get; set; }
 
         public virtual User User { get; set; }
+        public virtual IEnumerable<RequestLine> RequestLines { get; set; }
+        
 
         public Request() { }
         }

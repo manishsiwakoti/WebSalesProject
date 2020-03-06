@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebSalesProject.Data;
 
 namespace WebSalesProject.Migrations
 {
     [DbContext(typeof(SalesDbContext))]
-    partial class SalesDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200306221253_added request1")]
+    partial class addedrequest1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -101,31 +103,6 @@ namespace WebSalesProject.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("requests");
-                });
-
-            modelBuilder.Entity("WebSalesProject.Models.RequestLine", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
-
-                    b.Property<int>("RequestId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProductId");
-
-                    b.HasIndex("RequestId");
-
-                    b.ToTable("RequestLine");
                 });
 
             modelBuilder.Entity("WebSalesProject.Models.User", b =>
@@ -242,23 +219,8 @@ namespace WebSalesProject.Migrations
             modelBuilder.Entity("WebSalesProject.Models.Request", b =>
                 {
                     b.HasOne("WebSalesProject.Models.User", "User")
-                        .WithMany("Requests")
+                        .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("WebSalesProject.Models.RequestLine", b =>
-                {
-                    b.HasOne("WebSalesProject.Models.Product", "Product")
-                        .WithMany("RequestLines")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("WebSalesProject.Models.Request", "Request")
-                        .WithMany("RequestLines")
-                        .HasForeignKey("RequestId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
