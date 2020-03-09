@@ -25,14 +25,21 @@ namespace WebSalesProject.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Request>>> Getrequests()
         {
-            return await _context.requests.ToListAsync();
+            return await _context.Requests.ToListAsync();
         }
 
-        // GET: api/Requests/5
-        [HttpGet("{id}")]
+        
+
+        //GET: api/Requests/5
+        [HttpGet("reviews/{id}")]
+        public async Task <ActionResult<IEnumerable<Request>>>GetRequestsToBeReviewed(int userId)
+            {
+            return await _context.Requests 
+                .Where(x=>x.Status.Equals(RequestStatus.Review) && x.UserId != 1).TolistAsync();
+          }
         public async Task<ActionResult<Request>> GetRequest(int id)
         {
-            var request = await _context.requests.FindAsync(id);
+            var request = await _context.Requests.FindAsync(id);
 
             if (request == null)
             {
@@ -80,7 +87,7 @@ namespace WebSalesProject.Controllers
         [HttpPost]
         public async Task<ActionResult<Request>> PostRequest(Request request)
         {
-            _context.requests.Add(request);
+            _context.Requests.Add(request);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetRequest", new { id = request.Id }, request);
@@ -90,13 +97,13 @@ namespace WebSalesProject.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<Request>> DeleteRequest(int id)
         {
-            var request = await _context.requests.FindAsync(id);
+            var request = await _context.Requests.FindAsync(id);
             if (request == null)
             {
                 return NotFound();
             }
 
-            _context.requests.Remove(request);
+            _context.Requests.Remove(request);
             await _context.SaveChangesAsync();
 
             return request;
@@ -104,7 +111,7 @@ namespace WebSalesProject.Controllers
 
         private bool RequestExists(int id)
         {
-            return _context.requests.Any(e => e.Id == id);
+            return _context.Requests.Any(e => e.Id == id);
         }
     }
 }

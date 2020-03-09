@@ -21,6 +21,20 @@ namespace WebSalesProject.Controllers
             _context = context;
         }
 
+        private void RecalculateReqestlinesTotal(int requestId)
+            {
+            var request = _context.Requests.Find(requestId);
+            if(request== null)
+                {
+                return;
+                }
+           
+           {
+                return;
+
+             }
+            }
+
         // GET: api/RequestLines
         [HttpGet]
         public async Task<ActionResult<IEnumerable<RequestLine>>> GetRequestLine()
