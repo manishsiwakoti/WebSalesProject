@@ -20,20 +20,26 @@ namespace WebSalesProject.Controllers
         {
             _context = context;
         }
-
-        private void RecalculateReqestlinesTotal(int requestId)
+        
+        //calculating Total of requestlines
+        
+        private void RequestlinesTotal(int requestId)
             {
             var request = _context.Requests.Find(requestId);
-            if(request== null)
+            if (request == null)
                 {
                 return;
                 }
-           
-           {
-                return;
-
-             }
+            request.Total = _context.RequestLines
+                           .Include(l => l.Product)
+                           .Where(l => l.RequestId == requestId)
+                           .Sum(l => l.Quantity * l.Product.Price);
+            _context.SaveChanges();
+            
             }
+                
+
+             
 
         // GET: api/RequestLines
         [HttpGet]
@@ -49,6 +55,7 @@ namespace WebSalesProject.Controllers
             var requestLine = await _context.RequestLine.FindAsync(id);
 
             if (requestLine == null)
+
             {
                 return NotFound();
             }
@@ -72,6 +79,7 @@ namespace WebSalesProject.Controllers
             try
             {
                 await _context.SaveChangesAsync();
+                RequestlinesTotal(requestLine.RequestId);
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -96,6 +104,7 @@ namespace WebSalesProject.Controllers
         {
             _context.RequestLine.Add(requestLine);
             await _context.SaveChangesAsync();
+            RequestlinesTotal(requestLine.RequestId);
 
             return CreatedAtAction("GetRequestLine", new { id = requestLine.Id }, requestLine);
         }
@@ -112,7 +121,7 @@ namespace WebSalesProject.Controllers
 
             _context.RequestLine.Remove(requestLine);
             await _context.SaveChangesAsync();
-
+            RequestlinesTotal(requestLine.RequestId);
             return requestLine;
         }
 

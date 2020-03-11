@@ -21,11 +21,13 @@ namespace WebSalesProject.Controllers
             _context = context;
         }
 
-        // GET: api/UserName&&Password
-        [HttpGet ("{UserName}/{Password}")] 
+        //Get:User 
+        [HttpGet ("login/{UserName}/{Password}")] 
         public async Task<ActionResult<User>>Login(string UserName, string Password)
             {
             return await _context.Users.SingleOrDefaultAsync(u => u.UserName.ToLower().Equals(UserName.ToLower()) && u.Password.Equals(Password));
+            
+         
             }
         //Get:User
         [HttpGet]

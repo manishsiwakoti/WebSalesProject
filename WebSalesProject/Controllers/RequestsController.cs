@@ -8,35 +8,76 @@ using Microsoft.EntityFrameworkCore;
 using WebSalesProject.Data;
 using WebSalesProject.Models;
 
-namespace WebSalesProject.Controllers
+namespace CapstoneFinalProject.Controllers
 {
+    public static class RequestStatus
+        {
+        public static string Review = "REVIEW";
+        public static string Reject = "REJECTED";
+        public static string Approve = "APPROVED";
+       
+        }
     [Route("api/[controller]")]
     [ApiController]
     public class RequestsController : ControllerBase
-    {
+        {
+        
         private readonly SalesDbContext _context;
 
         public RequestsController(SalesDbContext context)
-        {
+            {
             _context = context;
-        }
+            }
+        //Get:api/Requests
+        [HttpGet("review/{id}")]
+        public async Task<ActionResult<IEnumerable<Request>>> GetReview( int id)
+            {
+           return await _context.Requests.Where(x => x.Status == ("REVIEW") && x.UserId != id).ToListAsync();
+            
+            
+            }
+       
+        //Post:api/Requests
+        [HttpPost("reject" )]
+        public async Task<IActionResult> PostReject(Request request)
+           {
+            request.Status = "REJECTED";
+            return await PutRequest(request.Id, request);
 
+           }
+       
+        //post:api/Requests 
+        [HttpPost("approve")]
+        public async Task<IActionResult>PostApprove(Request request)
+            {
+            request.Status = "APPROVED";
+            return await PutRequest(request.Id, request);
+            }
+
+        //post : api/Requests
+        [HttpPost("review")]
+
+        public async Task<IActionResult> PostReview(Request request)
+            {
+
+            if (request.Total <= 50) 
+                request.Status = "REVIEW";
+            return await PutRequest(request.Id, request);
+            
+            }
+           
+         
+      
+     
         // GET: api/Requests
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Request>>> Getrequests()
+        public async Task<ActionResult<IEnumerable<Request>>> GetRequests()
         {
             return await _context.Requests.ToListAsync();
         }
 
-        
-
-        //GET: api/Requests/5
-        [HttpGet("reviews/{id}")]
-        public async Task <ActionResult<IEnumerable<Request>>>GetRequestsToBeReviewed(int userId)
-            {
-            return await _context.Requests 
-                .Where(x=>x.Status.Equals(RequestStatus.Review) && x.UserId != 1).TolistAsync();
-          }
+        // GET: api/Requests/5
+        [HttpGet("{id}")]
         public async Task<ActionResult<Request>> GetRequest(int id)
         {
             var request = await _context.Requests.FindAsync(id);

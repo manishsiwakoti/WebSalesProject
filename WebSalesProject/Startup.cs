@@ -12,6 +12,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 using WebSalesProject.Data;
 
+
 namespace WebSalesProject
     {
     public class Startup
@@ -42,6 +43,7 @@ namespace WebSalesProject
             services.AddCors(option =>
             option.AddPolicy(DefaultCorsPolicy, x =>
                                                 x.WithOrigins(AllowOrgins).WithMethods(AllowMethods).AllowAnyHeader()));
+;
 
             }
 
