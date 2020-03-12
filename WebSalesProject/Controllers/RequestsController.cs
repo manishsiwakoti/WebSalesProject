@@ -16,10 +16,10 @@ namespace CapstoneFinalProject.Controllers
     public class RequestsController : ControllerBase
         {
 
-        //public static string StatusNew = "NEW";
-        //public static string StatusReview = "REVIEW";
-        //public static string StatusReject = "REJECTED";
-        //public static string StatusApprove = "APPROVED";
+        public static string StatusNew = "NEW";
+        public static string StatusReview = "REVIEW";
+        public static string StatusRejected = "REJECTED";
+        public static string StatusApprove = "APPROVED";
 
             
 
@@ -33,7 +33,7 @@ namespace CapstoneFinalProject.Controllers
         [HttpGet("review/{id}")]
         public async Task<ActionResult<IEnumerable<Request>>> GetReview( int id)
             {
-           return await _context.Requests.Where(x => x.Status == ("REVIEW") && x.UserId != id).ToListAsync();
+           return await _context.Requests.Where(x => x.Status == StatusApprove && x.UserId != id).ToListAsync();
             
             
             }
@@ -42,7 +42,7 @@ namespace CapstoneFinalProject.Controllers
         [HttpPost("reject" )]
         public async Task<IActionResult> PostReject(Request request)
            {
-            request.Status = "REJECTED";
+            request.Status = StatusRejected;
             return await PutRequest(request.Id, request);
 
            }
@@ -51,7 +51,7 @@ namespace CapstoneFinalProject.Controllers
         [HttpPost("approve")]
         public async Task<IActionResult>PostApprove(Request request)
             {
-            request.Status = "APPROVED";
+            request.Status = StatusApprove;
             return await PutRequest(request.Id, request);
             }
 
@@ -63,11 +63,11 @@ namespace CapstoneFinalProject.Controllers
 
             if (request.Total <= 50) 
                     {
-                    request.Status = "APPROVED";
+                    request.Status = StatusApprove;
                     }
             else
                 { 
-                request.Status = "REVIEW"; 
+                request.Status = StatusReview; 
                 }
 
             return await PutRequest(id, request);
