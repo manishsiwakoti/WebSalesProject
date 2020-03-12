@@ -23,7 +23,7 @@ namespace WebSalesProject.Controllers
         
         //calculating Total of requestlines
         
-        private void RequestlinesTotal(int requestId)
+        private void ReCalcTotal(int requestId)
             {
             var request = _context.Requests.Find(requestId);
             if (request == null)
@@ -79,7 +79,7 @@ namespace WebSalesProject.Controllers
             try
             {
                 await _context.SaveChangesAsync();
-                RequestlinesTotal(requestLine.RequestId);
+                ReCalcTotal(requestLine.RequestId);
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -104,7 +104,7 @@ namespace WebSalesProject.Controllers
         {
             _context.RequestLine.Add(requestLine);
             await _context.SaveChangesAsync();
-            RequestlinesTotal(requestLine.RequestId);
+            ReCalcTotal(requestLine.RequestId);
 
             return CreatedAtAction("GetRequestLine", new { id = requestLine.Id }, requestLine);
         }
@@ -121,7 +121,7 @@ namespace WebSalesProject.Controllers
 
             _context.RequestLine.Remove(requestLine);
             await _context.SaveChangesAsync();
-            RequestlinesTotal(requestLine.RequestId);
+            ReCalcTotal(requestLine.RequestId);
             return requestLine;
         }
 

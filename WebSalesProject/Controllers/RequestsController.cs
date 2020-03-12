@@ -10,18 +10,19 @@ using WebSalesProject.Models;
 
 namespace CapstoneFinalProject.Controllers
 {
-    public static class RequestStatus
-        {
-        public static string Review = "REVIEW";
-        public static string Reject = "REJECTED";
-        public static string Approve = "APPROVED";
-       
-        }
+    
     [Route("api/[controller]")]
     [ApiController]
     public class RequestsController : ControllerBase
         {
-        
+
+        //public static string StatusNew = "NEW";
+        //public static string StatusReview = "REVIEW";
+        //public static string StatusReject = "REJECTED";
+        //public static string StatusApprove = "APPROVED";
+
+            
+
         private readonly SalesDbContext _context;
 
         public RequestsController(SalesDbContext context)
@@ -55,14 +56,22 @@ namespace CapstoneFinalProject.Controllers
             }
 
         //post : api/Requests
-        [HttpPost("review")]
+        [HttpPost("review/{id}")]
 
-        public async Task<IActionResult> PostReview(Request request)
+        public async Task<IActionResult> PostReview(int id, Request request)
             {
 
             if (request.Total <= 50) 
-                request.Status = "REVIEW";
-            return await PutRequest(request.Id, request);
+                    {
+                    request.Status = "APPROVED";
+                    }
+            else
+                { 
+                request.Status = "REVIEW"; 
+                }
+
+            return await PutRequest(id, request);
+            
             
             }
            
